@@ -1,4 +1,30 @@
 <!DOCTYPE html>
+<script>
+  fetch('https://api.github.com/users/MyLaptop111/repos')
+    .then(response => response.json())
+    .then(data => {
+      const projectsDiv = document.getElementById('github-projects');
+      
+      if (data.length === 0) {
+        projectsDiv.innerHTML = '<p>No repositories found.</p>';
+        return;
+      }
+
+      data.forEach(repo => {
+        const projectCard = document.createElement('div');
+        projectCard.classList.add('project');
+        projectCard.innerHTML = `
+          <h3>${repo.name}</h3>
+          <p>${repo.description || 'No description available'}</p>
+          <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+        `;
+        projectsDiv.appendChild(projectCard);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching data from GitHub API', error);
+    });
+</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
